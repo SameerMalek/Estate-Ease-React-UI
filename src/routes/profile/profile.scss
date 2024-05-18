@@ -32,7 +32,7 @@
           font-weight: 300;
         }
 
-        button {
+        .button {
           padding: 12px 24px;
           background-color: #fece51;
           cursor: pointer;
@@ -49,6 +49,15 @@
           display: flex;
           align-items: center;
           gap: 20px;
+        }
+        button{
+          width: 100px;
+          background-color: teal;
+          border: none;
+          padding:10px 20px;
+          color: white;
+          cursor: pointer;
+          border-radius: 5px;
         }
         img {
           width: 40px;
