@@ -3,10 +3,12 @@ import "./profileUpdatePage.scss";
 import { AuthContext } from "./../../context/AuthContext";
 import apiRequest from "./../../lib/apiRequest";
 import { useNavigate } from 'react-router-dom';
+import CloudinaryUploadWidget from "../../components/uploadWidget/uploadWidget";
 
 export default function ProfileUpdatePage() {
   const { currentUser, updateUser } = useContext(AuthContext);
   const [error, setError] = useState("");
+  const [avatar, setAvatar] = useState([]);
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,6 +19,7 @@ export default function ProfileUpdatePage() {
         username,
         email,
         password,
+        avatar:avatar[0],
       });
       updateUser(res.data);
       navigate("/profile")
@@ -58,9 +61,18 @@ export default function ProfileUpdatePage() {
       </div>
       <div className="sideContainer">
         <img
-          src={currentUser.avatar || "noavatar.png"}
+          src={avatar[0]|| currentUser.avatar|| "/noavatar.png"}
           alt=""
           className="avatar"
+        />
+        <CloudinaryUploadWidget
+        uwConfig={{
+          cloudName:"EstateEase",
+          uploadPreset:"EstateEase",
+          multiple:false,
+          folder:"avatars",
+        }}
+        setState={setAvatar}
         />
       </div>
     </div>

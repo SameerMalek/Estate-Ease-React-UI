@@ -6,7 +6,7 @@ export default function Card({item}) {
   return (
     <div className='card'>
     <Link to={`/${item.id}`} className="imgContainer">
-      <img src={item.img} alt="House" />
+      <img src={item.images[0]} alt="House" />
     </Link>
     <div className="textContainer">
       <h2 className='title'>
@@ -41,3 +41,4 @@ export default function Card({item}) {
     </div>
   )
 }
+

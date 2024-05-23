@@ -1,100 +1,133 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import "./chat.scss";
-import { userData } from "../../lib/dummydata";
+import { AuthContext} from "./../../context/AuthContext";
+import apiRequest from "../../lib/apiRequest";
+import { format } from "timeago.js";
+import { SocketContext } from "../../context/SocketContext";
+import { useNotificationStore } from "../../lib/notificationStore";
 
-export default function Chat() {
-  const [chat, setChat] = useState(true);
+export default function Chat({ chats }) {
+  const [chat, setChat] = useState(null);
+  const { currentUser } = useContext(AuthContext);
+  const { socket } = useContext(SocketContext);
+  const messageEndRef = useRef();
+  const decrease = useNotificationStore((state)=>state.decrease);
+
+  useEffect(()=>{
+    messageEndRef.current?.scrollIntoView({behavior:"smooth"});
+  },[chat]);
+
+  const handleOpenChat = async (id, receiver) => {
+    try {
+      const res = await apiRequest("/chats/" + id);
+      if(!res.data.seenBy.includes(currentUser.id)){
+        decrease();
+      }
+      setChat({ ...res.data, receiver });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const text = formData.get("text");
+    if (!text) return;
+    try {
+      const res = await apiRequest.post("/messages/" + chat.id, { text });
+      setChat((prev) => ({ ...prev, messages: [...prev.messages, res.data] }));
+      e.target.reset();
+      socket.emit("sendMessage",{
+        receiverId: chat.receiver.id,
+        data: res.data,
+      })
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(()=>{
+    const read = async ()=>{
+      try{
+      await apiRequest.put("/chats/read/" + chat.id);
+      }catch(err){
+        console.log(err);
+      }
+    };
+
+    if(chat && socket){
+      socket.on("getMessage",(data)=>{
+        if(chat.id === data.chatId){
+          setChat((prev) =>({...prev, messages:[...prev.messages,data]}));
+          read();
+        }
+      });
+    }
+    return () => {
+      socket.off("getMessage");
+    };
+  },[socket,chat]);
   return (
     <div className="chat">
       <div className="messages">
         <h1>Messages</h1>
-        <div className="message">
-          <img src={userData.img} alt="userImage" />
-          <span>{userData.name}</span>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing...</p>
-        </div>
-        <div className="message">
-          <img src={userData.img} alt="userImage" />
-          <span>{userData.name}</span>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing...</p>
-        </div>
-        <div className="message">
-          <img src={userData.img} alt="userImage" />
-          <span>{userData.name}</span>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing...</p>
-        </div>
-        <div className="message">
-          <img src={userData.img} alt="userImage" />
-          <span>{userData.name}</span>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing...</p>
-        </div>
-        <div className="message">
-          <img src={userData.img} alt="userImage" />
-          <span>{userData.name}</span>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing...</p>
-        </div>
+        {chats?.map((c) => (
+          <div
+            className="message"
+            key={c.id}
+            style={{
+              backgroundColor: c.seenBy.includes(currentUser.id) || chat?.id === c.id
+                ? "white"
+                : "#fecd514e",
+            }}
+            onClick={() => handleOpenChat(c.id, c.reciever)}
+          >
+            <img src={c.reciever.avatar || "/noavatar.png"} alt="userImage" />
+            <span>{c.reciever.username}</span>
+            <p>{c.lastMessage}</p>
+          </div>
+        ))}
       </div>
       {chat && (
         <div className="chatBox">
           <div className="top">
             <div className="user">
-              <img src={userData.img} alt="userImage" />
-              {userData.name}
+              <img src={chat.receiver.avatar || "/noavatar.png"} alt="userImage" />
+              {chat.receiver.username}
             </div>
-            <span className="close" onClick={()=>setChat(null)}>X</span>
+            <span className="close" onClick={() => setChat(null)}>
+              X
+            </span>
           </div>
           <div className="center">
-            <div className="chatMessage">
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi,
-                similique.
-              </p>
-              <span>1 hour ago</span>
-            </div>
-            <div className="chatMessage own">
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi,
-                similique.
-              </p>
-              <span>1 hour ago</span>
-            </div>
-            <div className="chatMessage">
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi,
-                similique.
-              </p>
-              <span>1 hour ago</span>
-            </div>
-            <div className="chatMessage own">
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi,
-                similique.
-              </p>
-              <span>1 hour ago</span>
-            </div>
-            <div className="chatMessage">
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi,
-                similique.
-              </p>
-              <span>1 hour ago</span>
-            </div>
-            <div className="chatMessage own">
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi,
-                similique.
-              </p>
-              <span>2 hour ago</span>
-            </div>
+            {chat.messages.map((message) => (
+              <div
+                className="chatMessage"
+                style={{
+                  alignSelf:
+                    message.userId === currentUser.id
+                      ? "flex-end"
+                      : " flex-start",
+                  textAlign:
+                    message.userId === currentUser.id ? "right" : " left",
+                }}
+                key={message.id}
+              >
+                <p>{message.text}</p>
+                <span>{format(message.createdAt)}</span>
+              </div>
+            ))}
+            <div ref={messageEndRef}></div>
           </div>
-          <div className="bottom">
+          <form onSubmit={handleSubmit} className="bottom">
             <textarea
-              name="message"
+              name="text"
               id="message"
               placeholder="Ask your question"
             ></textarea>
             <button>Send</button>
-          </div>
+          </form>
         </div>
       )}
     </div>

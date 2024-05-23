@@ -20,6 +20,7 @@
     }
     .wrapper {
       padding-right: 50px;
+      margin-bottom: 75px;
 
       @include sm{
         padding-right:0px;
@@ -193,6 +194,7 @@
           border: 1px solid #fece51;
           border-radius: 5px;
           cursor: pointer;
+          margin-bottom: 40px;
         }
 
         img {
