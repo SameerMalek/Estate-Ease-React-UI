@@ -89,7 +89,10 @@
 
         }
 
-        button{
+        .button{
+            display: flex;
+            justify-content: center;
+            align-items: center;
             border: none;
             cursor: pointer;
             background-color: rgb(244, 200, 128);
