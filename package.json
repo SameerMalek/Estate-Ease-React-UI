@@ -22,8 +22,8 @@
   },
   "scripts": {
     "dev": "vite",
-    "start": "vite build",
-    "build": "react-scripts build",
+    "start": "react-scripts start",
+    "build": "vite build",
     "serve": "vite preview"
   },
   "eslintConfig": {
