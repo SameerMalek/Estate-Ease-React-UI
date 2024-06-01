@@ -1,70 +1,34 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Estate-Ease Frontend
+As the name suggests, Estate-Ease is designed to simplify the process of renting or buying properties.
 
-## Available Scripts
+# What it does
+The frontend of Estate-Ease provides a user-friendly interface to browse, search, and interact with property listings. It offers responsive and aesthetically pleasing designs, ensuring a seamless experience across different devices.
 
-In the project directory, you can run:
+# What problem it solves
+Estate-Ease addresses the complexity and inefficiency often associated with property searches. By providing a clean and intuitive interface, users can easily find and explore properties, reducing the time and effort required in the process.
 
-### `npm start`
+# How I built it
+I built the frontend of this project using HTML, SCSS, React.js, and several other technologies and libraries:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1. HTML & SCSS: For creating responsive and visually appealing designs.
+2. React.js: Utilized for building dynamic user interfaces. Implemented key hooks such as useState, useEffect, useContext, and useNavigate for state management and navigation.
+3. Figma: Used for designing the custom background image for the homepage.
+4. React-Router DOM: For seamless navigation and routing within the application.
+5. React Leaflet Map Library: Integrated to provide an interactive map component for property locations.
+6. Responsive Design: Ensured optimal user experience across various devices using SCSS.
+# Steps:
+- Initial Setup: Started with setting up a React.js environment.
+- Design: Created the design for the homepage and other pages using Figma and implemented it with SCSS.
+- Routing: Implemented routing using React-Router DOM for smooth navigation.
+- State Management: Managed state using React hooks (useState, useEffect, useContext, useNavigate) and integrated Zustand for advanced state management.
+- Map Integration: Added interactive map functionality using the React Leaflet Map Library.
+- Authentication: Integrated authentication flow using JWT and React Context API for managing user sessions.
+# Dependencies
+- react
+- react-dom
+- react-router-dom
+- react-leaflet
+- zustand
+- axios
+- scss
